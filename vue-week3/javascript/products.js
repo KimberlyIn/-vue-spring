@@ -1,7 +1,7 @@
 import { createApp } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.9/vue.esm-browser.js';
 
-let productModal = null;
-let delProductModal = null;
+let productModal = {};
+let delProductModal = {};
 
 createApp({
   data() {
@@ -12,7 +12,7 @@ createApp({
       isNew: false,
       tempProduct: {
         imagesUrl: [],
-      },
+      }
     }
   },
   mounted() {
@@ -24,7 +24,6 @@ createApp({
       keyboard: false
     });
 
-    // 取出 Token
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
     axios.defaults.headers.common.Authorization = token;
 
@@ -44,54 +43,61 @@ createApp({
     },
     getProduct() {
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/products/all`;
-      axios.get(url).then((response) => {
+      axios.get(url)
+      .then((response) => {
         this.products = response.data.products;
-      }).catch((err) => {
-        alert(err.data.message);
+      })
+      .catch((error) => {
+        alert(error.data.message);
       })
     },
     updateProduct() {
-      let url = `${this.apiUrl}/api/${this.apiPath}/admin/product`;
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product`
       let http = 'post';
 
-      if (!this.isNew) {
-        url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
-        http = 'put'
+      if(!this.isNew) {
+        url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`
+        http = 'put';
       }
 
-      axios[http](url, { data: this.tempProduct }).then((response) => {
+      axios[http](url, { data: this.tempProduct })
+      .then((response) => {
         alert(response.data.message);
+        // 為什麼時候的資料會跑到 productModal 裡面？ productModal 在這裡的功用是什麼？
         productModal.hide();
         this.getProduct();
-      }).catch((err) => {
-        alert(err.data.message);
+      })
+      .catch((error) => {
+        alert(error.data.message);
       })
     },
-    openModal(isNew, item) {
-      if (isNew === 'new') {
+    openModal( isNew, item) {
+      if(isNew === 'new') {
+        // 新增一個資料
         this.tempProduct = {
           imagesUrl: [],
         };
         this.isNew = true;
         productModal.show();
-      } else if (isNew === 'edit') {
-        this.tempProduct = { ...item };
+      } else if(isNew === 'edit') {
         this.isNew = false;
-        productModal.show();
-      } else if (isNew === 'delete') {
         this.tempProduct = { ...item };
-        delProductModal.show()
+        productModal.show();
+      } else if(isNew === 'delete') {
+        this.tempProduct = { ...item };
+        delProductModal.show();
       }
     },
     deleteProduct() {
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
-
-      axios.delete(url).then((response) => {
+      axios.delete(url)
+      .then((response) => {
         alert(response.data.message);
         delProductModal.hide();
         this.getProduct();
-      }).catch((err) => {
-        alert(err.data.message);
+      })
+      .catch((error) => {
+        alert(error.data.message);
       })
     },
     createImages() {
