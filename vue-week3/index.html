@@ -85,63 +85,38 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body d-flex">
-            <div class="col-sm-4 pe-3">
+            <div class="col-sm-4">
               <div class="mb-3">
-                <label for="imageUrl" class="form-label">輸入主圖片網址</label>
-                <input 
-                  type="text" 
-                  class="form-control w-100" 
-                  placeholder="輸入主圖片網址" 
-                  aria-label="輸入主圖片網址"
-                  v-model="tempProduct.imageUrl"
-                >
-                <img class="img-fluid" :src="tempProduct.imageUrl" alt="">
+                <label for="imageUrl" class="form-label">主要圖片</label>
+                <input v-model="tempProduct.imageUrl" type="text" class="form-control mb-2" placeholder="請輸入圖片連結">
+                <img class="img-fluid" :src="tempProduct.imageUrl">
               </div>
-              <!-- 這個地方需要去判斷 tempProuct.imagesUrl 是否為陣列
-              原因是因為必須判斷按鈕何時啟用？如果 tempProuct.imagesUrl 是一個陣列圖片，
-              那我們就顯示這個陣列圖片，如果不是，就會出現新增圖片按鈕嗎？ -->
-              <div 
-                class="mb-3"
-                v-if="Array.isArray(tempProduct.imagesUrl)"
-              >
-                <div v-for="(item, key) in tempProduct.imagesUrl" :key="key">
-                  <label for="imageUrl" class="form-label">輸入圖片網址</label> 
-                  <input 
-                    type="text" 
-                    class="form-control w-100" 0
-                    placeholder="輸入圖片網址" 
-                    aria-label="輸入圖片網址"
-                    v-modal="tempProduct.imagesUrl[key]"  
-                  >
+              <h3 class="mb-3">多圖新增</h3>
+              <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                <div class="mb-1" v-for="(image, key) in tempProduct.imagesUrl" :key="key">
+                  <div class="mb-3">
+                    <label for="imageUrl" class="form-label">圖片網址</label>
+                    <input v-model="tempProduct.imagesUrl[key]" type="text" class="form-control"
+                      placeholder="請輸入圖片連結">
+                  </div>
                   <img class="img-fluid" :src="image">
                 </div>
-              </div>
-              <div
-                v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length-1]"
-              >
-                <button 
-                  type="button" 
-                  class="btn w-100 btn-outline-secondary"
-                  @click="tempProduct.imagesUrl.push('')"
-                >
-                  新增圖片
-                </button>
-              </div>
-              <div v-else>
-                <button 
-                  type="button" 
-                  class="btn w-100 btn-danger"
-                  @click="tempProduct.imagesUrl.pop()"
-                >
-                  刪除圖片
-                </button>
+                <div
+                  v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
+                  <button class="btn btn-outline-primary btn-sm d-block w-100"
+                    @click="tempProduct.imagesUrl.push('')">
+                    新增圖片
+                  </button>
+                </div>
+                <div v-else>
+                  <button class="btn btn-outline-danger btn-sm d-block w-100" @click="tempProduct.imagesUrl.pop()">
+                    刪除圖片
+                  </button>
+                </div>
               </div>
               <div v-else>
-                <button 
-                  type="button" 
-                  class="btn w-100 btn-outline-secondary"
-                  @click="createImages"
-                >
+                <button class="btn btn-outline-primary btn-sm d-block w-100"
+                  @click="createImages">
                   新增圖片
                 </button>
               </div>
