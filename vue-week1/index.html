@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+
+<body>
+  <div id="app">
+    <div class="constainer w-75 d-flex my-3 mx-auto">
+      <div class="col-6 mx-4">
+        <h2>產品列表</h2>
+        <ul class="list-title d-flex justify-content-between my-0 pb-2 list-unstyled border-bottom border-3">
+          <li>產品名稱</li>
+          <li>原價</li>
+          <li>售價</li>
+          <li>是否啟用</li>
+          <li>查看細節</li>
+        </ul>
+        <ul 
+          class="list-unstyled d-flex justify-content-between my-0 py-2 border-bottom border-1"
+          v-for="(item) in products" v-bind:key="item.id"
+        >
+          <li style="width: 120px;">{{ item.title }}</li>
+          <li style="width: 90px;">{{ item.origin_price }}</li>
+          <li style="width: 90px;">{{ item.price }}</li>
+          <li v-if="item.is_enabled" style="width: 70px;">
+            <span v-if="item.is_enabled">啟用</span>
+            <span v-else="">不啟用</span>
+          </li>
+          <li>
+            <button class="py-2 px-3 border-0 rounded-1 text-light bg-secondary" type="button" @click="tempProduct = item">察看細節</button>
+          </li>
+        </ul>
+        <p class="my-3">目前有 <span>{{ products.length }}</span> 項產品</p>
+      </div>
+      <div class="col-6 mx-4">
+        <h2>單一產品細節</h2>
+        <!-- v-if="tempProduct.title" 判斷有商品顯示商品，沒有商品顯示「請選擇商品」 -->
+        <div 
+          class="product"
+          v-if="tempProduct.title"
+        >
+          <div class="px-3 pt-3 border">
+            <div class="col-12 d-flex justify-content-center">
+              <img :src="tempProduct.imageUrl" class="w-25" alt="主圖">
+            </div>
+            <div class="col-12 pt-3">
+              <div class="title d-flex justify-content-start">
+                <h4>{{ tempProduct.title }}</h4>
+                <span class="mb-2 ms-2 px-2 py-1 rounded-1 text-light bg-success">{{ tempProduct.category }}</span>
+              </div>
+              <ul class="list-unstyled">
+                <li>
+                  <p>商品描述：<span> {{ tempProduct.description }} </span>:</p>
+                </li>
+                <li>
+                  <p>商品內容：<span> {{ tempProduct.content }}</span></p>
+                </li>
+                <li class="d-flex">
+                  <p>{{ tempProduct.price }}</p>
+                  <p><span class="ps-2 text-decoration-line-through text-black-50"> {{ tempProduct.origin_price }} </span> 個/元</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- img是「行內元素」 外面包了一層div div是「區塊元素」自然不能並排  -->
+          <span v-for="(image, id) in tempProduct.imagesUrl" :key="id">
+            <img class="mw-100 m-2" style="height: 150px; object-fit: contain;" v-if="image" :src="image" alt="">
+          </span>
+        </div>
+        <p v-else>請選擇一個商品查看</p>
+      </div>
+    </div>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
+    integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
+    crossorigin='anonymous'></script>
+  <script src="./javascript/app.js" type="module"></script>
+</body>
+
+</html>
