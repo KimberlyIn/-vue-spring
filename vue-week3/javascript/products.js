@@ -52,11 +52,11 @@ createApp({
       })
     },
     updateProduct() {
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product`
+      let url = `${this.apiUrl}/api/${this.apiPath}/admin/product`
       let http = 'post';
 
       if(!this.isNew) {
-        url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`
+        url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.tempProduct.id}`;
         http = 'put';
       }
 
@@ -80,8 +80,8 @@ createApp({
         this.isNew = true;
         productModal.show();
       } else if(isNew === 'edit') {
-        this.isNew = false;
         this.tempProduct = { ...item };
+        this.isNew = false;
         productModal.show();
       } else if(isNew === 'delete') {
         this.tempProduct = { ...item };
