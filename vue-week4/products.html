@@ -93,7 +93,7 @@
             class="page-link"
             href="#"
             aria-label="Previous"
-            @click.prevent="emitPages(pages.current_page - 1)"
+            @click.prevent="emitPage(pages.current_page - 1)"
           >
             <span aria-hidden="true">&laquo;</span>
           </a>
@@ -112,7 +112,7 @@
             class="page-link"
             href="#"
             v-else
-            @click.prevent="emitPages(item)"
+            @click.prevent="emitPage(item)"
           >{{ item }}</a>
         </li>
         <li
@@ -123,7 +123,7 @@
             class="page-link"
             href="#"
             aria-label="Next"
-            @click.prevent="emitPages(pages.current_page + 1)"
+            @click.prevent="emitPage(pages.current_page + 1)"
           >
             <span aria-hidden="true">&raquo;</span>
           </a>
