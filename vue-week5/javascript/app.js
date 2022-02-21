@@ -21,6 +21,9 @@ const apiPath = 'jemmanine';
 Vue.createApp({
   data() {
     return {
+      loadingStatus: {
+        loadingItem: '',
+      },
       products: [],
       product: {},
       cart: {},
@@ -67,8 +70,10 @@ Vue.createApp({
     // 取得單一商品
     getProduct(id) {
       const api = `${apiUrl}/api/${apiPath}/product/${id}`;
+      this.loadingStatus.loadingItem = id;
       axios.get(api)
       .then((res) => {
+        this.loadingStatus.loadingItem = '';
         this.product = res.data.product;
         this.$refs.userProductModal.openModal();
       })
@@ -79,6 +84,7 @@ Vue.createApp({
     // 加入購物車
     addToCart(id, qty = 1) {
       const url = `${apiUrl}/api/${apiPath}/cart`;
+      this.loadingStatus.loadingItem = id;
       const cart = {
         product_id: id,
         qty,
@@ -86,6 +92,7 @@ Vue.createApp({
 
       this.$refs.userProductModal.hideModal();
       axios.post(url, { data: cart }).then((response) => {
+        this.loadingStatus.loadingItem = '';
         alert(response.data.message);
         this.getCart();
       }).catch((err) => {
@@ -95,6 +102,7 @@ Vue.createApp({
     // 更新購物車
     updateCart(data) {
       const api = `${apiUrl}/api/${apiPath}/cart/${data.id}`;
+      this.loadingStatus.loadingItem = data.id;
       const cart = {
         product_id: data.product_id,
         qty: data.qty,
@@ -102,10 +110,12 @@ Vue.createApp({
       axios.put(api, { data: cart })
       .then((res) => { 
         alert(res.data.message);
+        this.loadingStatus.loadingItem = '';
         this.getCart();
       })
       .catch((err) => {
         alert(err.data.message);
+        this.loadingStatus.loadingItem = '';
       });
     },
     // 取得購物車
@@ -122,9 +132,11 @@ Vue.createApp({
     // 刪除單一商品
     removeCartItem(id) {
       const api = `${apiUrl}/api/${apiPath}/cart/${id}`;
+      this.loadingStatus.loadingItem = id;
       axios.delete(api)
       .then((res) => {
         alert(res.data.message);
+        this.loadingStatus.loadingItem = '';
         this.getCart();
       })
       .catch((err) => {

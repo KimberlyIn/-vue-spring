@@ -11,6 +11,10 @@
     integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <!-- font-awesome -->
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'
+  integrity='sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=='
+  crossorigin='anonymous' />
 
   <style>
     td {
@@ -27,7 +31,7 @@
     <div class="container">
       <div class="product py-5" >
         <user-product-modal ref="userProductModal" :product="product" @add-to-cart="addToCart"></user-product-modal>
-        <table class="w-100">
+        <table class="table align-middle">
           <thead>
             <tr>
               <th>圖片</th>
@@ -40,34 +44,47 @@
               v-for="item in products" :key="item.id"
             >
               <td style="width: 200px">
-                <div>
+                <div style="height: 100px; background-size: cover; background-position: center"
+                    :style="{backgroundImage: `url(${item.imageUrl})`}"></div>
+                <!-- <div>
                   <img
                     style="width: 100px;" 
                     :src="item.imageUrl">
-                </div>
+                </div> -->
               </td>
               <td>
                 {{ item.title }}
               </td>
               <td>
-                <div class="text-decoration-line-through">原價 {{ item.origin_price }} 元</div>
-                <div>現在只要 {{ item.price }} 元</div>
+                <!-- 如果沒有輸入售價 顯示原價 -->
+                <div class="h5" v-if="!item.price">{{ item.origin_price }} 元</div>
+                <!-- 如果有輸入售價 把原價劃刪除線 並顯示售價 -->
+                <del class="h6" v-if="item.price">原價 {{ item.origin_price }} 元</del>
+                <div class="h5" v-if="item.price">現在只要 {{ item.price }} 元</div>
               </td>
-              <td class="d-flex align-items-center">
-                <div>
+              <td>
+                <div class="d-flex align-items-center">
                   <button 
+                    class="btn btn-outline-secondary border-end-0"
                     type="button"
                     @click="getProduct(item.id)"
+                    :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled"
                   >
+                    <i 
+                      class="fas fa-spinner fa-pulse"
+                      v-if="loadingStatus.loadingItem === item.id"
+                    ></i>
                     查看更多
                   </button>
-                </div>
-
-                <div>
                   <button 
+                    class="btn btn-outline-danger"
                     type="button"
                     @click="addToCart(item.id)"
-                  >加到購物車</button>
+                    :disabled="loadingStatus.loadingItem === item.id || !item.is_enabled"
+                  >
+                  <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
+                    加到購物車
+                  </button>
                 </div>
               </td>
             </tr>
@@ -81,7 +98,7 @@
             <tr>
               <th></th>
               <th>品名</th>
-              <th>數量</th>
+              <th style="width: 150px">數量</th>
               <th>單價</th>
             </tr>
           </thead>
@@ -91,10 +108,12 @@
                 <td>
                   <button 
                     type="button" 
-                    class="close"
+                    class="close btn btn-outline-secondary"
                     @click="removeCartItem(item.id)"
+                    :disabled="loadingStatus.loadingItem === item.id"
                   >
-                    <i class="bi bi-x"></i>
+                    <i class="fas fa-spinner fa-pulse" v-if="loadingStatus.loadingItem === item.id"></i>
+                    x
                   </button>
                 </td>
                 <td>
@@ -103,12 +122,20 @@
                 <td>
                   <div class="input-group input-group-sm">
                     <div class="input-group mb-3">
-                      <input v-model.number="item.qty" @blur="updateCart(item)" min="1" type="number" class="form-control">
+                      <input 
+                        v-model.number="item.qty" 
+                        @blur="updateCart(item)" 
+                        min="1" 
+                        type="number" 
+                        class="form-control"
+                        :disabled="loadingStatus.loadingItem === item.id"
+                      >
                       <span class="input-group-text" id="basic-addon2">{{ item.product.unit }}</span>
                     </div>
                   </div>
                 </td>
-                <td>
+                <td class="text-end">
+                  <small v-if="cart.final_total !== cart.total" class="text-success">折扣價：</small>
                   {{ item.final_total}}
                 </td>
               </tr>
@@ -116,11 +143,24 @@
                 <td></td>
                 <td></td>
                 <td>總計</td>
-                <td>{{ cart.total}}</td>
+                <td class="text-end">{{ cart.total}}</td>
+              </tr>
+              <tr v-if="cart.final_total !== cart.total">
+                <td colspan="3" class="text-end text-success">折扣價</td>
+                <td class="text-end text-success">{{ cart.final_total }}</td>
               </tr>
             </template>
           </tbody>
         </table>
+        <div class="mt-5 text-end">
+          <button 
+            type="button" 
+            class="btn btn-outline-danger"
+            @click="delCartAll"
+          >
+            清空購物車
+          </button>
+        </div>
       </div>
 
       <div class="order py-5">
@@ -187,8 +227,8 @@
               <label for="message" class="form-label">留言</label>
               <textarea class="form-control" placeholder="請輸入留言" id="message" style="height: 200px"></textarea>
             </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-primary">送出訂單</button>
+            <div class="col-12 text-end">
+              <button type="submit" class="btn btn-danger">送出訂單</button>
             </div>
           </v-form>
         </div>
@@ -212,8 +252,8 @@
               </div>
               <div class="col-7">
                 <div>
-                  <p>{{ product.category }}</p>
-                  <p>{{ product.description }}</p>
+                  <span class="px-2 py-1 badge rounded-pill text-light bg-success">{{ product.category }}</span>
+                  <p class="mt-1">{{ product.description }}</p>
                 </div>
 
                 <div>
@@ -221,7 +261,7 @@
                 </div>
 
                 <div>
-                  <p>原價 {{ product.origin_price }} 元</p>
+                  <p class="mb-0 fw-light text-decoration-line-through">原價 {{ product.origin_price }} 元</p>
                   <p>現在只要 {{ product.price }} 元</p>
                 </div>
 
@@ -235,7 +275,7 @@
                     >
                     <button 
                       type="button" 
-                      class="btn btn-primary"
+                      class="btn btn-success"
                       @click="$emit('add-to-cart', product.id, qty)"
                     >
                       加入購物車
