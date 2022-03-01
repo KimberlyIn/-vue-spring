@@ -3,6 +3,7 @@
   <div id="nav">
     <router-link to="/">回到前台</router-link> |
     <router-link to="/admin/products">後台產品列表</router-link> |
+    <a href="#" @click.prevent="signout">登出</a>
   </div>
   <router-view v-if="checkSuccess"></router-view>
 </template>
@@ -35,6 +36,11 @@ export default {
           this.$router.push('/login');
         });
       }
+    },
+    signout() {
+      document.cookie = 'hexToken=;expires=;';
+      alert('token 已清除');
+      this.$router.push('/login');
     },
   },
 
