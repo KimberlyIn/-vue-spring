@@ -5,6 +5,7 @@
       <router-link class="text-dark text-decoration-none" to="/">首頁</router-link> |
       <router-link class="text-dark text-decoration-none" to="products">前台產品列表</router-link> |
       <router-link class="text-dark text-decoration-none" to="cart">前台購物車</router-link> |
+      <router-link class="text-dark text-decoration-none" to="/admin/products">後台購物車列表</router-link>
     </div>
   </div>
   <router-view></router-view>

@@ -27,11 +27,11 @@ const routes = [
   },
   {
     path: '/admin',
-    component: () => import('../views/Dashboard'),
+    component: () => import('../views/Dashboard.vue'),
     children: [
       {
         path: 'products',
-        component: () => ('../views/Dashboard/Products.vue'),
+        component: () => import('../views/Dashboard/Products.vue'),
       },
     ],
   },

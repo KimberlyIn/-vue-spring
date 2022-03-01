@@ -45,15 +45,12 @@
 export default {
   data() {
     return {
-      user: {
-        username: '',
-        password: '',
-      },
+      user: {},
     };
   },
   methods: {
     login() {
-      const api = `${process.env.VUE_APP_API}/admin/signin`;
+      const api = `${process.env.VUE_APP_API}admin/signin`;
       this.$http.post(api, this.user)
       .then((res) => {
         const { token, expired } = res.data;
