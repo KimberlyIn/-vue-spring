@@ -84,6 +84,7 @@
     <div class="order py-5">
       <div class="col-6 mx-auto">
         <Form 
+          ref="form"
           class="row g-3"
           v-slot="{ errors }"
           @submit="createOrder"
@@ -155,7 +156,10 @@
             ></textarea>
           </div>
           <div class="col-12 text-end">
-            <button type="submit" class="btn btn-danger">送出訂單</button>
+            <button 
+              type="submit" 
+              class="btn btn-danger"
+            >送出訂單</button>
           </div>
         </Form>
       </div>
@@ -261,7 +265,7 @@ export default {
       })
       .catch((err) => {
         alert(err.data.message);
-      })
+      });
     },
   },
 };
