@@ -1,15 +1,21 @@
 <template>
-  <h4>後台頁面</h4>
-  <div id="nav">
-    <router-link to="/">回到前台</router-link> |
-    <router-link to="/admin/products">後台產品列表</router-link> |
-    <a href="#" @click.prevent="signout">登出</a>
+  <div>
+    <div class="container">
+      <h2 class="mt-3 fw-bolder text-dark">大玖柑仔店後台管理</h2>
+      <div id="nav">
+        <router-link class="text-dark text-decoration-none" to="/">回到前台</router-link> |
+        <router-link class="text-dark text-decoration-none" to="/admin/products">後台產品列表</router-link> |
+        <router-link class="text-dark text-decoration-none" to="/admin/orders">後台訂單</router-link> |
+        <a href="#" class="text-dark text-decoration-none" @click.prevent="signout">登出</a>
+      </div>
+    </div>
+    <router-view v-if="checkSuccess"></router-view>
   </div>
-  <router-view v-if="checkSuccess"></router-view>
 </template>
 
 <script>
 export default {
+  name: "Dashboard",
   data() {
     return {
       checkSuccess: false,
@@ -20,8 +26,7 @@ export default {
   },
   methods: {
     checkLogin() {
-      const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
-        "$1");
+      const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,"$1");
       
       if(token) {
         this.$http.defaults.headers.common.Authorization = `${token}`;
@@ -35,6 +40,9 @@ export default {
           alert(err.data.message);
           this.$router.push('/login');
         });
+      } else {
+        alert('您尚未登入');
+        this.$router.push("/login");
       }
     },
     signout() {
@@ -43,6 +51,5 @@ export default {
       this.$router.push('/login');
     },
   },
-
-}
+};
 </script>
