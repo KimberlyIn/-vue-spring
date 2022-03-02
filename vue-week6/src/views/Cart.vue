@@ -7,6 +7,7 @@
     </h4>
 
     <div class="product-cart py-5">
+      <Loading :active="isLoading"></Loading>
       <table class="w-100">
         <thead>
           <tr>
@@ -24,8 +25,12 @@
                   type="button" 
                   class="close btn btn-outline-secondary"
                   @click="removeCartItem(item.id)"
+                  :disabled="loadingStatus.loadingItem === item.id"
                 >
-                  <i class="fas fa-spinner fa-pulse"></i>
+                  <i 
+                    class="fas fa-spinner fa-pulse"
+                    v-if="loadingStatus.loadingItem === item.id"
+                  ></i>
                   x
                 </button>
               </td>
@@ -167,6 +172,10 @@
 export default {
   data() {
     return {
+      loadingStatus: {
+        loadingItem: '',
+      },
+      isLoading: false,
       cart: [],
       form: {
         user: {
@@ -185,10 +194,12 @@ export default {
   },
   methods: {
     getCart() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       this.$http.get(api)
       .then((res) => {
         this.cart = res.data.data;
+        this.isLoading = false;
       })
       .catch((err) => {
         alert(err.data.message);
@@ -211,6 +222,7 @@ export default {
       })
     },
     removeCartItem(id) {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`;
       this.$http.delete(api)
       .then((res) => {
@@ -219,9 +231,12 @@ export default {
       })
       .catch((err) => {
         alert(err.data.message);
-      })
+      });
+      this.loadingStatus.loadingItem = "";
+      this.isLoading = false;
     },
     deleteAll() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/carts`
       this.$http.delete(api)
       .then((res) => {
@@ -230,15 +245,19 @@ export default {
       })
       .catch((err) => {
         alert(err.data.message);
-      })
+      });
+      this.loadingStatus.loadingItem = "";
+      this.isLoading = false;
     },
     createOrder() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`;
       const order = this.form;
       this.$http.post(api, { data: order })
       .then((res) => {
         alert(res.data.message);
         this.$refs.form.resetForm();
+        this.isLoading = false;
       })
       .catch((err) => {
         alert(err.data.message);

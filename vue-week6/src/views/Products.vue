@@ -8,6 +8,7 @@
     </div>
 
     <div class="container">
+      <Loading :active="isLoading"></Loading>
       <div class="product py-5" >
         <table class="table align-middle">
           <thead>
@@ -39,16 +40,24 @@
                     class="btn btn-outline-secondary border-end-0"
                     type="button"
                     @click="getProduct(item.id)"
+                    :disabled="loadingStatus.loadingItem === item.id"
                   >
-                    <i class="fas fa-spinner fa-pulse"></i>
+                    <i 
+                      class="fas fa-spinner fa-pulse"
+                      v-if="loadingStatus.loadingItem === item.id"
+                    ></i>
                     查看更多
                   </button>
                   <button 
                     class="btn btn-outline-danger"
                     type="button"
                     @click="addToCart(item.id)"
+                    :disabled="loadingStatus.loadingItem === item.id"
                   >
-                  <i class="fas fa-spinner fa-pulse"></i>
+                  <i 
+                    class="fas fa-spinner fa-pulse"
+                    v-if="loadingStatus.loadingItem === item.id"
+                  ></i>
                     加到購物車
                   </button>
                 </div>
@@ -68,6 +77,10 @@ import UserProductModal from '@/components/UserProductModal.vue';
 export default {
   data() {
     return {
+      loadingStatus: {
+        loadingItem: '',
+      },
+      isLoading: false,
       products: [],
       product:{},
     };
@@ -80,7 +93,9 @@ export default {
   },
   methods: {
     addToCart(id, qty = 1) {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+      this.loadingStatus.loadingItem = id;
       const cart = {
         product_id: id,
         qty,
@@ -88,27 +103,35 @@ export default {
       this.$http.post(api, { data: cart })
       .then((res) => {
         alert(res.data.message);
-        this.$refs.userProductModal.hideModal();
+        this.$refs.userProductModal.hideModal(); 
+        this.loadingStatus.loadingItem = '';    
+        this.isLoading = false;      
       })
       .catch((err) => {
         alert(err.data.message);
-      })
+      });
     },
     getProducts() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products`;
       this.$http.get(api)
       .then((res) => {
         this.products = res.data.products;
+        this.isLoading = false;
       })
       .catch((err) => {
         alert(err.data.message);
       })
     },
     getProduct(id) {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${id}`;
+      this.loadingStatus.loadingItem = id;
       this.$http.get(api)
       .then((res) => {
+        this.loadingStatus.loadingItem = '';
         this.product = res.data.product;
+        this.isLoading = false;
         this.$refs.userProductModal.openModal();
       })
       .catch((err) => {
