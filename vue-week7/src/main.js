@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 
 import axios from 'axios';
-import VueAxios from 'vue-axios';
+import VueAxios from 'vue-axios'; 
 
 import Loading from 'vue3-loading-overlay';
 import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
@@ -13,9 +13,15 @@ import {
 import AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
+import $httpMessageState from '@/methods/pushMessageState';
 
 import App from './App.vue';
 import router from './router';
+
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+import { date, currency } from './methods/filters';
 
 Object.keys(AllRules).forEach((rule) => {
   defineRule(rule, AllRules[rule]);
@@ -29,11 +35,20 @@ configure({
 // 設定預設語系
 setLocale('zh_TW');
 
-createApp(App)
-.use(router)
-.use(VueAxios, axios)
-.component('Loading', Loading)
-.component('Form', Form)
-.component('Field', Field)
-.component('ErrorMessage', ErrorMessage)
-.mount('#app');
+const app = createApp(App);
+app.config.globalProperties.$filters = {
+  date,
+  currency,
+};
+
+app.config.globalProperties.$httpMessageState = $httpMessageState;
+
+app.use(router);
+app.use(VueAxios, axios);
+app.use(VueSweetalert2);
+app.use(CKEditor);
+app.component('Loading', Loading);
+app.component('Form', Form);
+app.component('Field', Field);
+app.component('ErrorMessage', ErrorMessage);
+app.mount('#app');
