@@ -3,9 +3,9 @@ import Home from '../views/Home.vue';
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home,
+    parh: '/',
+    name: 'login',
+    component: () => import('../views/Login.vue'),
   },
   {
     path: '/about',
@@ -19,6 +19,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
+  linkActiveClass: 'active',
   routes,
 });
 
