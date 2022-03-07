@@ -19,7 +19,7 @@
               <a class="nav-link" href="#">貼文</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">登出</a>
+              <a href="#" @click.prevent="logout" class="nav-link">登出</a>
             </li>
           </ul>
           <ul class="navbar-nav ms-auto">
@@ -27,7 +27,7 @@
               <a class="nav-link" href="#">Blog</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">登出</a>
+              <a class="nav-link" href="#">購物車</a>
             </li>
           </ul>
         </div>
@@ -38,10 +38,21 @@
 
 <script>
 export default {
-  data() {
-    return {
-
-    };
+  inject: ['emitter'],
+  methods: {
+    logout() {
+      const api = `${process.env.VUE_APP_API}/logout`;
+      this.$http.post(api)
+      .then((response) => {
+        this.$httpMessageState(response, '登出');
+        if (response.data.success) {
+          this.$router.push('/');
+        }
+      })
+      .catch((error) => {
+        this.$httpMessageState(error.response, '錯誤訊息');
+      })
+    },
   },
-}
+};
 </script>

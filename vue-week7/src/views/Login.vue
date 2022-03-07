@@ -21,11 +21,11 @@
             >
           </div>
           <div class="mb-4">
-            <label for="floatingInputInvalid">Password</label>
+            <label for="floatingInputInvalid2">Password</label>
             <input 
               type="password" 
               class="form-control is-invalid" 
-              id="floatingInputInvalid" 
+              id="floatingInputInvalid2" 
               placeholder="請輸入密碼" 
               v-model="user.password"
               required
