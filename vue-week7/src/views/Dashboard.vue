@@ -1,25 +1,26 @@
 <template>
   <div>
-    <h3>products</h3>
+    <Navbar/>
+    <router-view v-if="status"/>
   </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue';
+
 export default {
   data() {
     return {
-      status: {
-
-      },
+      status: false,
     };
   },
   components: {
-
-  },
-  methods: {
-
+    Navbar
   },
   mounted() {
+    
+  },
+  methods: {
     
   },
 }

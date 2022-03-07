@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>products</h3>
+    <h2>Orders.vue</h2>
   </div>
 </template>
 
@@ -8,19 +8,17 @@
 export default {
   data() {
     return {
-      status: {
 
-      },
     };
   },
-  components: {
-
-  },
-  methods: {
+  component: {
 
   },
   mounted() {
     
+  },
+  methods: {
+
   },
 }
 </script>
