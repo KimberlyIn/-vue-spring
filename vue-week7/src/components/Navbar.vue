@@ -9,26 +9,14 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <router-link to="/admin/products" class="nav-link">產品</router-link>
-            <li class="nav-item">
-              <a class="nav-link" href="#">訂單</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">優惠券</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">貼文</a>
-            </li>
-            <li class="nav-item">
-              <a href="#" @click.prevent="logout" class="nav-link">登出</a>
-            </li>
+            <router-link to="/admin/orders" class="nav-link">訂單</router-link>
+            <router-link to="/admin/coupons" class="nav-link">優惠券</router-link>
+            <router-link to="/admin/article" class="nav-link">貼文</router-link>
+            <a href="#" @click.prevent="logout" class="nav-link">登出</a>
           </ul>
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">購物車</a>
-            </li>
+            <router-link to="/user/articles" class="nav-link">Blog</router-link>
+            <router-link to="/user/cart" class="nav-link">購物車</router-link>
           </ul>
         </div>
       </div>

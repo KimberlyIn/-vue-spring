@@ -9,6 +9,7 @@
 <script>
 import emitter from '@/methods/eventBus';
 import Navbar from '@/components/Navbar.vue';
+import ToastMessages from '@/components/ToastMessages.vue';
 
 export default {
   data() {
@@ -19,6 +20,7 @@ export default {
   },
   components: {
     Navbar,
+    ToastMessages,
   },
   provide() {
     return {

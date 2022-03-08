@@ -1,6 +1,7 @@
 <template>
   <div>
-    <!-- <ToastMessages></ToastMessages> -->
+    <Loading :active="isLoading" :z-index="1060"></Loading>
+    <ToastMessages></ToastMessages>
     <div class="container vh-100">
       <form 
         class="form-floating row h-100 align-items-center justify-content-center"
@@ -12,7 +13,7 @@
             <label for="floatingInputInvalid">Email address</label>
             <input 
               type="email" 
-              class="form-control is-invalid" 
+              class="form-control" 
               id="floatingInputInvalid" 
               placeholder="name@example.com"
               v-model="user.username"
@@ -24,7 +25,7 @@
             <label for="floatingInputInvalid2">Password</label>
             <input 
               type="password" 
-              class="form-control is-invalid" 
+              class="form-control" 
               id="floatingInputInvalid2" 
               placeholder="請輸入密碼" 
               v-model="user.password"
@@ -41,32 +42,36 @@
 </template>
 
 <script>
-// import ToastMessages from '@/components/ToastMessages.vue';
+import ToastMessages from '@/components/ToastMessages.vue';
 
 export default {
   data() {
     return {
+      isLoading: false,
       user: {},
     };
   },
   components: {
-    // ToastMessages,
+    ToastMessages,
   },
   mounted() {
 
   },
   methods: {
     login() {
+      this.isLoading = true;
       const api = `${process.env.VUE_APP_API}/admin/signin`;
       this.$http.post(api, this.user)
       .then((res) => {
         alert(res.data.message);
         const { token, expired } = res.data;
         document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
+        this.isLoading = false;
         this.$router.push('/admin/products');
       })
-      .catch((err) => {
-        alert(err.data.message);
+      .catch((error) => {
+        this.isLoading = false;
+        this.$httpMessageState(error.res, '登入');
       })
     },
   },
