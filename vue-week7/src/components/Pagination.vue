@@ -1,46 +1,51 @@
 <template>
   <div class="d-flex justify-content-center">
     <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li :class="{ disabled: !pages.has_pre }" class="page-item">
-        <a
-          class="page-link"
-          href="#"
-          aria-label="Previous"
-          @click.prevent="updatePage(pages.current_page - 1)"
+      <ul class="pagination" >
+        <!-- :class="{ 'disabled':!pages.has_prc } 這個時候的資料已經在 pages 裡面 -->
+        <!-- 發現必須先寫 :class="{ disabled: !pages.has_pre }" 再寫 class="page-item" Previous 才有反應 -->
+        <li :class="{ disabled: !pages.has_pre }" class="page-item">
+          <a 
+            class="page-link" 
+            href="#" 
+            aria-label="Previous"
+            @click.prevent="updatePage(pages.current_page - 1)"
+          >
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li 
+          class="page-item"
+          v-for="page in pages.total_pages"
+          :key="page"
+          :class="{ active: page === pages.current_page }"
         >
-          <span aria-hidden="true">&laquo;</span>
-        </a>
-      </li>
-      <li
-        class="page-item"
-        v-for="page in pages.total_pages"
-        :key="page"
-        :class="{ active: pages.current_page === page }"
-      >
-        <span class="page-link" v-if="page === pages.current_page">{{
-          page
-        }}</span>
-        <a
-          class="page-link"
-          v-else
-          href="#"
-          @click.prevent="updatePage(page)"
-          >{{ page }}</a
+          <span class="page-link" v-if="page === pages.current_page">
+            {{ page }}
+          </span>
+          <a
+            class="page-link"
+            v-else
+            href="#"
+            @click.prevent="updatePage(page)"
+            >{{ page }}
+          </a>
+        </li>
+        <li 
+          class="page-item"
+          :class="{ disabled: !pages.has_next }"
         >
-      </li>
-      <li class="page-item" :class="{ disabled: !pages.has_next }">
-        <a
-          class="page-link"
-          href="#"
-          aria-label="Next"
-          @click.prevent="updatePage(pages.current_page + 1)"
-        >
-          <span aria-hidden="true">&raquo;</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+          <a
+            class="page-link"
+            href="#"
+            aria-label="Next"
+            @click.prevent="updatePage(pages.current_page + 1)"
+          >
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 

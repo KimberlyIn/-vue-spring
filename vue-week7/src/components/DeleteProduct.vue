@@ -1,0 +1,22 @@
+<template>
+  <div>
+    <div class="modal fade" id="delProductModal" ref="delProductModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="exampleModalLabel">刪除商品</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            是否刪除
+            <span class="fw-bold text-danger">item.title</span> 商品(刪除後將無法恢復)
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-danger">確認刪除</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
