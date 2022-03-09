@@ -31,6 +31,7 @@
              <button 
                   type="button" 
                   class="btn btn-sm btn-outline-secondary border-end-0 rounded-0"
+                  @click="openModal(false, item)"
                 >
                   編輯
                 </button>
@@ -47,7 +48,7 @@
     <!-- :pages="pagination" 外層 Products.vue 的 pagination 傳遞 data 到內層 Pagination.vue 並自定義名稱為 pages -->
     <!-- @emit-page="getProducts" 內層 Pagination.vue 用 emit 觸發外層 Products.vue 的 getProducts，且自訂義名稱為 emit-page -->
     <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
-
+    <CreateProduct :product="tempProduct" :isNew="isNew" @update-product="updateProduct" ref="createProduct"></CreateProduct>
   </div>
 </template>
 
@@ -64,7 +65,13 @@ export default {
       tempProduct: {},
       isLoading: false,
       isNew: false,
-      status: {},
+      status: {
+        fileUploading: false,
+      },
+      // modal: {
+      //   editModal: '',
+      //   delModal: '',
+      // },
       // 不太理解這個用途
       // currentPage: 1,
     };
@@ -103,6 +110,7 @@ export default {
       productComponent.openModal();
     },
     updateProduct(item) {
+      // 這個部分猜測是直接將 item 賦予到上面 data 的 tempProuct
       this.tempProduct = item;
       let api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product`;
       this.isLoading = true;
@@ -124,6 +132,7 @@ export default {
         this.$httpMessageState(error.response, status);
       });
     },
+
   },
   created() {
     this.getProducts();

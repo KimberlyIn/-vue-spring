@@ -97,7 +97,6 @@ let delProductModal = {};
         let http = 'post';
 
         if(!this.isNew) {
-          // 這裡的 this.product是指 data 裡我們賦予的 products: [], 嗎
           api = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.product.id}`;
           http = 'put';
         }
