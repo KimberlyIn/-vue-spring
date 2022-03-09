@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="modal fade " id="productModal" ref="productModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade " id="createProduct" ref="modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header bg-secondary">
@@ -21,7 +21,6 @@
                   aria-label="輸入主圖片網址"
                   
                 >
-                <!-- 因為圖片是由外層 tempProduct 傳進內層 Product？ -->
                 <img class="img-fluid"  alt="">
               </div>
               <div>
@@ -56,7 +55,6 @@
                   </button>
                 </div>
               </div>
-              <!-- 這一段不寫，還是可以新增圖片跟刪除圖片，不是很理解這一段的意思 -->
               <div>
                 <button 
                   type="button" 
@@ -121,7 +119,30 @@
 </template>
 
 <script>
+import modalMixin from '@/mixins/modalMixin';
+
 export default {
-  
+  props: {
+    product: {
+      type: Object,
+      default() {
+        return{};
+      },
+    },
+    isNew: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data() {
+    return {
+      status: {},
+      modal: '',
+      tempProduct: {},
+    };
+  },
+  mixins: [modalMixin],
+
+
 }
 </script>

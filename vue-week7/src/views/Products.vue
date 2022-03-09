@@ -2,7 +2,7 @@
   <div>
     <Loading :actuve="isLoading" :z-index="1060"></Loading>
     <div class="text-end mt-4 me-5"> 
-      <button type="button" class="btn btn-secondary">建立新的產品</button>
+      <button type="button" class="btn btn-secondary" @click="openModal(true)">建立新的產品</button>
     </div>
     <table class="w-100 table table-hover mt-4">
       <thead>
@@ -65,6 +65,8 @@ export default {
       isLoading: false,
       isNew: false,
       status: {},
+      // 不太理解這個用途
+      // currentPage: 1,
     };
   },
   components: {
@@ -72,6 +74,7 @@ export default {
     CreateProduct,
     DeleteProduct,
   },
+  // inject: ['emitter'],
   methods: {
     // 抓取頁數商品
     getProducts(page = 1) {
@@ -88,16 +91,38 @@ export default {
         this.$httpMessageState(error.response, '錯誤訊息');
       })
     },
-    openModal() {
-      if(isNew === 'new') {
+    openModal(isNew, item) {
+      if (isNew) {
         this.tempProduct = {};
         this.isNew = true;
       } else {
         this.tempProduct = { ...item };
         this.isNew = false;
       }
-      const productComponent = this.$refs.CreateProduct;
+      const productComponent = this.$refs.createProduct;
       productComponent.openModal();
+    },
+    updateProduct(item) {
+      this.tempProduct = item;
+      let api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product`;
+      this.isLoading = true;
+      let httpMethod = 'post';
+      let status = '新增產品';
+      if (!this.isNew) {
+        api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
+        httpMethod = 'put';
+        status = '更新產品';
+      }
+      const productComponent = this.$refs.createProduct;
+      this.$http[httpMethod](api, { data: this.tempProduct }).then((response) => {
+        this.isLoading = false;
+        this.$httpMessageState(response, status);
+        productComponent.hideModal();
+        this.getProducts(this.currentPage);
+      }).catch((error) => {
+        this.isLoading = false;
+        this.$httpMessageState(error.response, status);
+      });
     },
   },
   created() {
