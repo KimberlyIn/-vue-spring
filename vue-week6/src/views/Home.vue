@@ -13,6 +13,7 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue';
+import emitter from '@/methods/eventBus';
 
 export default {
   name: 'Home',
@@ -22,6 +23,7 @@ export default {
   },
   components: {
     Navbar,
+    emitter,
   },
 };
 </script>

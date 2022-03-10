@@ -1,5 +1,4 @@
 <template>
-  
   <div class="container text-center">
     <h4 class="text-secondary mt-3">
       <i class="bi bi-cart-fill text-center fs-4 text-secondary"></i>
@@ -166,10 +165,6 @@
     </div>
 
   </div>
-
-  
-
-
 </template>
 
 <script>

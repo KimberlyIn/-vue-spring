@@ -83,11 +83,15 @@ export default {
       isLoading: false,
       products: [],
       product:{},
+      // cart: {
+      //   carts: [],
+      // },
     };
   },
   components: {
     UserProductModal,
   },
+  // inject: ['emitter'],
   mounted() {
     this.getProducts();
   },
@@ -103,9 +107,10 @@ export default {
       this.$http.post(api, { data: cart })
       .then((res) => {
         alert(res.data.message);
-        this.$refs.userProductModal.hideModal(); 
+        this.$refs.userProductModal.hideModal();
         this.loadingStatus.loadingItem = '';    
-        this.isLoading = false;      
+        this.isLoading = false; 
+        // this.emitter.emit('get-cart');
       })
       .catch((err) => {
         alert(err.data.message);
