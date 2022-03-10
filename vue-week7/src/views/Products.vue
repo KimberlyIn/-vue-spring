@@ -68,12 +68,12 @@ export default {
       status: {
         fileUploading: false,
       },
-      // modal: {
-      //   editModal: '',
-      //   delModal: '',
-      // },
+      modal: {
+        editModal: '',
+        delModal: '',
+      },
       // 不太理解這個用途
-      // currentPage: 1,
+      currentPage: 1,
     };
   },
   components: {
@@ -81,7 +81,7 @@ export default {
     CreateProduct,
     DeleteProduct,
   },
-  // inject: ['emitter'],
+  inject: ['emitter'],
   methods: {
     // 抓取頁數商品
     getProducts(page = 1) {
@@ -132,7 +132,9 @@ export default {
         this.$httpMessageState(error.response, status);
       });
     },
+    deleteProduct() {
 
+    },
   },
   created() {
     this.getProducts();
