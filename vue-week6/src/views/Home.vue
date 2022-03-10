@@ -1,13 +1,9 @@
 <template>
   <div>
     <div class="home">
+      <Navbar />
       <div class="container">
-        <h2 class="mt-3 fw-bolder text-dark">大玖柑仔店</h2>
         <div id="nav">
-          <router-link class="text-dark text-decoration-none" to="/">首頁</router-link> |
-          <router-link class="text-dark text-decoration-none" to="products">前台產品列表</router-link> |
-          <router-link class="text-dark text-decoration-none" to="cart">前台購物車</router-link> |
-          <router-link class="text-dark text-decoration-none" to="/admin/products">後台購物車列表</router-link>
         </div>
       </div>
     </div>
@@ -16,12 +12,16 @@
 </template>
 
 <script>
+import Navbar from '@/components/Navbar.vue';
+
 export default {
   name: 'Home',
   data() {
     return {
-
     };
+  },
+  components: {
+    Navbar,
   },
 };
 </script>

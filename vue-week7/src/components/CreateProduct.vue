@@ -78,28 +78,28 @@
             <div class="col-sm-8 pe-3">
               <div class="mb-3">
                 <label for="title" class="form-label mb-2">標題</label>
-                <input type="text" class="form-control w-100" id="title" v-model="tempProduct.title" placeholder="請輸入標題" aria-label="請輸入標題" >
+                <input type="text" class="form-control w-100" id="title" v-model="tempProduct.title" placeholder="請輸入標題">
               </div>
 
               <div class="row mb-3">
                 <div class="col-6">
                   <label for="category" class="form-label">分類</label>
-                  <input type="text" class="form-control w-100" id="category" v-model="tempProduct.category" placeholder="請輸入分類" aria-label="請輸入分類" >
+                  <input type="text" class="form-control w-100" id="category" v-model="tempProduct.category" placeholder="請輸入分類">
                 </div>
                 <div class="col-6">
                   <label for="origin_price" class="form-label">原價</label>
-                  <input type="text" class="form-control w-100" id="origin_price" v-model="tempProduct.origin_price" placeholder="請輸入原價" aria-label="請輸入原價">
+                  <input type="number" class="form-control w-100" id="origin_price" min="0" v-model.number="tempProduct.origin_price" placeholder="請輸入原價"/>
                 </div>
               </div>
 
               <div class="row mb-3">
                 <div class="col-6">
                   <label for="unit" class="form-label">單位</label>
-                  <input type="text" class="form-control w-100" id="unit" v-model="tempProduct.unit" placeholder="請輸入單位" aria-label="請輸入單位">
+                  <input type="text" class="form-control w-100" id="unit" v-model="tempProduct.unit" placeholder="請輸入單位">
                 </div>
                 <div class="col-6">
                   <label for="price" class="form-label">售價</label>
-                  <input type="text" class="form-control w-100" id="price" v-model="tempProduct.price" placeholder="請輸入售價" aria-label="請輸入售價">
+                  <input type="number" class="form-control w-100" id="price" min="0" v-model.number="tempProduct.price" placeholder="請輸入售價">
                 </div>
               </div>
 
@@ -114,7 +114,7 @@
               </div>
 
               <div class="check-box">
-                <input id="is_enabled" v-model="tempProduct.is_enabled" class="form-check-input" type="checkbox" :true_value="1" :false_value="0">
+                <input id="is_enabled" v-model="tempProduct.is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0">
                 <label for="is_enabled" class="form-label">是否啟用</label>
               </div>
             </div>

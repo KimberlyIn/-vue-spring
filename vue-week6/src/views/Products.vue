@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container text-center">
       <h4 class="text-secondary mt-3">
         <i class="bi bi-bag-fill fs-4 text-secondary"></i>
         商品列表
