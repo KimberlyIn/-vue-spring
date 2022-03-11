@@ -193,9 +193,9 @@ export default {
   mounted() {
     this.getCart();
 
-    emitter.on('get-cart', () => {
-      this.getCart();
-    });
+    // emitter.on('get-cart', () => {
+    //   this.getCart();
+    // });
   },
   methods: {
     getCart() {
