@@ -73,6 +73,7 @@
 
 <script>
 import UserProductModal from '@/components/UserProductModal.vue';
+import emitter from '@/libs/emitter';
 
 export default {
   data() {
@@ -83,15 +84,11 @@ export default {
       isLoading: false,
       products: [],
       product:{},
-      // cart: {
-      //   carts: [],
-      // },
     };
   },
   components: {
     UserProductModal,
   },
-  // inject: ['emitter'],
   mounted() {
     this.getProducts();
   },
@@ -107,10 +104,11 @@ export default {
       this.$http.post(api, { data: cart })
       .then((res) => {
         alert(res.data.message);
-        this.$refs.userProductModal.hideModal();
+        // this.$refs.userProductModal.hideModal();
         this.loadingStatus.loadingItem = '';    
         this.isLoading = false; 
-        // this.emitter.emit('get-cart');
+        // $emit 是 vue 的方法，emit 是 emit 本身的方法
+        emitter.emit('get-cart');
       })
       .catch((err) => {
         alert(err.data.message);

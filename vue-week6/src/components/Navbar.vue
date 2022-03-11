@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import emitter from '@/libs/emitter';
 
 export default {
   data() {
@@ -54,9 +55,10 @@ export default {
   },
   mounted() {
     this.getCart();
-    // this.emitter.on('get-cart', () => {
-    //   this.getCart();
-    // });
+    // 監聽使用 on
+    emitter.on('get-cart', () => {
+      this.getCart();
+    });
   },
 };
 </script>
