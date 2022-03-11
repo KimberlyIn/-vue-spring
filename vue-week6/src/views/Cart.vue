@@ -168,6 +168,8 @@
 </template>
 
 <script>
+import emitter from '@/libs/emitter';
+
 export default {
   data() {
     return {
@@ -190,6 +192,10 @@ export default {
   },
   mounted() {
     this.getCart();
+
+    emitter.on('get-cart', () => {
+      this.getCart();
+    });
   },
   methods: {
     getCart() {
@@ -227,6 +233,7 @@ export default {
       .then((res) => {
         alert(res.data.message);
         this.getCart();
+        emitter.emit('get-cart');
       })
       .catch((err) => {
         alert(err.data.message);
@@ -241,6 +248,7 @@ export default {
       .then((res) => {
         alert(res.data.message);
         this.getCart();
+        emitter.emit('get-cart');
       })
       .catch((err) => {
         alert(err.data.message);
