@@ -14,7 +14,7 @@
             <router-link to="/admin/article" class="nav-link">貼文</router-link>
             <a href="#" @click.prevent="logout" class="nav-link">登出</a>
           </ul>
-          <ul class="navbar-nav ">
+          <ul class="navbar-nav ms-auto">
             <router-link to="/user/articles" class="nav-link">Blog</router-link>
             <router-link to="/user/cart" class="nav-link">購物車</router-link>
           </ul>

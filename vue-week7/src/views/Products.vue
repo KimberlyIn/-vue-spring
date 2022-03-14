@@ -1,54 +1,60 @@
 <template>
   <div>
     <Loading :actuve="isLoading" :z-index="1060"></Loading>
-    <div class="text-end mt-4 me-5"> 
+    <div class="text-end mt-4 mx-5"> 
       <button type="button" class="btn btn-secondary" @click="openModal(true)">建立新的產品</button>
     </div>
-    <table class="w-100 table table-hover mt-4">
-      <thead>
-        <tr>
-          <th width="100">分類</th>
-          <th>產品名稱</th>
-          <th width="120">原價</th>
-          <th width="120">售價</th>
-          <th width="120">是否啟用</th>
-          <th width="150">編輯</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr 
-          v-for="item in products" :key="item.id"
-        >
-          <td>{{ item.category }}</td>
-          <td>{{ item.title }}</td>
-          <td>{{ item.origin_price }}</td>
-          <td>{{ item.price }}</td>
-          <td>
-            <span class="text-success" v-if="item.is_enabled">啟用</span>
-            <span v-else>未啟用</span>
-          </td>
-          <td>
-             <button 
-                  type="button" 
-                  class="btn btn-sm btn-outline-secondary border-end-0 rounded-0"
-                  @click="openModal(false, item)"
-                >
-                  編輯
-                </button>
-                <button 
-                  type="button" 
-                  class="btn btn-sm btn-outline-danger rounded-0" 
-                >
-                  刪除
-                </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="px-3">
+      <table class="table table-hover mt-4">
+        <thead>
+          <tr>
+            <th width="100">分類</th>
+            <th>產品名稱</th>
+            <th width="120">原價</th>
+            <th width="120">售價</th>
+            <th width="120">是否啟用</th>
+            <th width="150">編輯</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            v-for="item in products" :key="item.id"
+          >
+            <td>{{ item.category }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.origin_price }}</td>
+            <td>{{ item.price }}</td>
+            <td>
+              <span class="text-success" v-if="item.is_enabled">啟用</span>
+              <span v-else>未啟用</span>
+            </td>
+            <td>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-outline-secondary border-end-0 rounded-0"
+                @click="openModal(false, item)"
+              >
+                編輯
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-outline-danger rounded-0" 
+                @click="openDelProductModal(item)"
+              >
+                刪除
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
     <!-- :pages="pagination" 外層 Products.vue 的 pagination 傳遞 data 到內層 Pagination.vue 並自定義名稱為 pages -->
     <!-- @emit-page="getProducts" 內層 Pagination.vue 用 emit 觸發外層 Products.vue 的 getProducts，且自訂義名稱為 emit-page -->
     <Pagination :pages="pagination" @emit-pages="getProducts"></Pagination>
     <CreateProduct :product="tempProduct" :isNew="isNew" @update-product="updateProduct" ref="createProduct"></CreateProduct>
+
+    <DeleteProduct :item="tempProduct" ref="deleteProduct" @del-product="delProduct"></DeleteProduct>
   </div>
 </template>
 
@@ -68,11 +74,7 @@ export default {
       status: {
         fileUploading: false,
       },
-      modal: {
-        editModal: '',
-        delModal: '',
-      },
-      // 不太理解這個用途
+      // 調用頁數資料使用
       currentPage: 1,
     };
   },
@@ -85,6 +87,7 @@ export default {
   methods: {
     // 抓取頁數商品
     getProducts(page = 1) {
+      this.currentPage = page;
       const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/products?page=${page}`;
       this.isLoading = true;
       this.$http.get(api)
@@ -132,8 +135,28 @@ export default {
         this.$httpMessageState(error.response, status);
       });
     },
-    deleteProduct() {
-
+    openDelProductModal(item) {
+      this.tempProduct = { ...item };
+      // 這個部分對到 DeleteProduct.vue 的 id="deleteProduct"
+      const delComponent = this.$refs.deleteProduct;
+      delComponent.openModal();
+    },
+    delProduct() {
+      const api = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`
+      this.isLoading = true;
+      this.$http.delete(api)
+      .then((response) => {
+        this.isLoading = false;
+        this.$httpMessageState(response, '刪除產品');
+        // 這個部分對到 DeleteProduct.vue 的 id="deleteProduct"
+        const delComponent = this.$refs.deleteProduct;
+        delComponent.hideModal();
+        this.getProducts(this.currentPage);
+      })
+      .catch((error) => {
+        this.isLoading = false;
+        this.$httpMessageState(error.response, '刪除產品');
+      })
     },
   },
   created() {
