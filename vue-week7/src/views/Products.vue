@@ -74,10 +74,10 @@ export default {
       status: {
         fileUploading: false,
       },
-      modal: {
-        editModal: '',
-        deleteProduct: '',
-      },
+      // modal: {
+      //   editModal: '',
+      //   delModal: '',
+      // },
       // 調用頁數資料使用
       currentPage: 1,
     };
