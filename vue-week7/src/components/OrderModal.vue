@@ -3,8 +3,8 @@
     <div class="modal fade" id="orderModal" ref="modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalToggleLabel">訂單細節</h5>
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title text-light" id="exampleModalToggleLabel">訂單細節</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -98,7 +98,7 @@
             <button
               type="button"
               class="btn btn-outline-secondary" 
-              data-bs-toggle="modal" 
+              data-bs-dismiss="modal" 
             >
               取消
             </button>

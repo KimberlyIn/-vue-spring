@@ -112,17 +112,25 @@
                 <label for="content" class="form-label">說明內容</label>
                 <textarea class="form-control w-100" id="content" v-model="tempProduct.content" placeholder="請輸入說明內容"></textarea>
               </div>
-
-              <div class="check-box">
-                <input id="is_enabled" v-model="tempProduct.is_enabled" class="form-check-input" type="checkbox" :true-value="1" :false-value="0">
-                <label for="is_enabled" class="form-label">是否啟用</label>
+              <div class="form-check">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="is_enabled" 
+                  v-model="tempProduct.is_enabled"
+                  :true-value="1" 
+                  :false-value="0"
+                >
+                <label class="form-check-label" for="is_enabled">
+                  是否啟用
+                </label>
               </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
             <!-- @click="$emit('update-product', tempProduct)" data 裡的 tempProduct 已被賦予傳進來的 product? -->
-            <button type="button" class="btn btn-dark" @click="$emit('update-product', tempProduct)">確認</button>
+            <button type="button" class="btn btn-secondary" @click="$emit('update-product', tempProduct)">確認</button>
           </div>
         </div>
       </div>
