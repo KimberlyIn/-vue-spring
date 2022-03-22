@@ -68,3 +68,27 @@
     </div>
   </div>
 </template>
+
+<script>
+import modalMixin from '@/mixins/modalMixin';
+
+export default {
+  props: {
+    article: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    isNew: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  data() {
+    
+  },
+  emitter: ['get-article'],
+  mixins: [modalMixin],
+}
+</script>
