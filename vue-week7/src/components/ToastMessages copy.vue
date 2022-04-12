@@ -1,5 +1,6 @@
 <template>
-<!-- 講義連結：https://quip.com/nKbJA0ae4Tou/2022-Vue-5 -->
+  <!-- 影音在 vue spring 第七週助教解說 -->
+  <!-- 講義連結：https://quip.com/nKbJA0ae4Tou/2022-Vue-5 -->
   <!-- style="z-index: 1500" 必須蓋在最上面，甚至比 loading 更上面 -->
   <div
     class="toast-container position-fixed pe-3 top-0 end-0"
@@ -63,8 +64,12 @@ export default {
       this.messages.splice(index, 1);
     },
   },
+  // emitter.on（'自訂名稱', ()=>{...}）
+  // emitter.emit('自訂名稱', {...})
   mounted() {
     this.emitter.on('push-message', (message) => {
+      // 接收資料的地方，會寫在 toast 元件
+      // 那麼觸發的地方則寫在觸發的頁面
       const { style = 'success', title, content } = message;
       this.messages.push({ style, title, content });
       this.toastShow();
