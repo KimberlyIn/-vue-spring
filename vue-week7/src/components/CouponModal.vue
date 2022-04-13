@@ -96,9 +96,29 @@ export default {
       // 將 this.coupon 賦予 this.tempCoupon
       this.tempCoupon = this.coupon;
       // 對 couponDate 賦予時間
+      // this.tempCoupon.due_date 會提取到一個時間戳，像是這樣：1636588800
+      // 我們必須轉換成看的懂的樣子，因此要先轉換成豪秒 1636588800 *1000，除非後端給的是 13 碼，那就可以不用 *1000，
+      // 此時已經可以拿到一個看的懂得格式，但這個格式也不是我們要的
+      // 他是長這個樣子： Thu Nov 11 2021 08:00:00 GMT+0800 (台北標準時間)
+      // 我們希望的格式是這樣： 2021-11-11，因此我們還需要再做轉換
+      // 所以我們會需要使用到 toISOString()，他是一個瀏覽器內建的函式，ISO 是一個格式，然後是 String
+      // 他的格式是 YYYY-MM-DDTHH:mm:ss.sssZ
+      // 我們只需要 YYYY-MM-DDTHH，所以使用到 split 把兩者分開，從 T 的地方分開。
+      // split 就是分開的方法
+
+      // Z 是時區的意思
+
+      // 這一段回傳後是一個陣列形式
+      // 分開之後要賦予回 this.due_date，但是我們只需要 2021-11-11
+      // 因此底下 [this.due_date] = couponDate; 的原型就是 this.due_data = dateAndTime[0]，0 的部分就是取到 2021-11-11
+      // 為什麼必須寫成 [this.due_date] = couponDate，因為有一些 vue 標準會要求我們寫成陣列結構的模式。
+
+      // 但假如我們今天是 this.due_data = dateAndTime[1] ，那麼就會取到後面時間的部分
+      // 因為這裡帶出來的陣列是長這樣 ['2021-11-11', '00:00:00.000Z']
+      // 我們這裡寫法又會變成 [,this.due_date] = couponDate;
       const couponDate = new Date(this.tempCoupon.due_date * 1000)
       .toISOString().split('T');
-      // 將已付與日期的 couponDate 賦予 this.due_data
+      // 將已賦予日期的 couponDate 賦予 this.due_data
       [this.due_date] = couponDate;
     },
     due_date() {
