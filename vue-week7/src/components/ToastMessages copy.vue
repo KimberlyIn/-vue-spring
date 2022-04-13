@@ -59,7 +59,11 @@ export default {
       setTimeout(() => {
         this.messages.shift();
       }, 6000);
+      // 呈現 3 秒後消失
     },
+    // 我們在上面 close button 的地方綁了一個 @click="clearToast(key)"
+    // 這裡的意思是他會根據 ID 幫我們從 message 裡面刪除一筆資料，並且消失提示
+    // 這裡使用到兩樣東西 toastShow 和 clearToast
     clearToast(index) {
       this.messages.splice(index, 1);
     },
@@ -70,7 +74,38 @@ export default {
     this.emitter.on('push-message', (message) => {
       // 接收資料的地方，會寫在 toast 元件
       // 那麼觸發的地方則寫在觸發的頁面
+
+      // 這裡是物件結構
+      // 透過 push-message 將其他頁面 ( 譬如： UserProductModal.vue ) 資料傳過來
+      // 傳過來的資料就是 style: 'success', title: '圖片已上傳'
       const { style = 'success', title, content } = message;
+      // 那麼如果我們不寫物件結構的話則是會長這樣
+      // const style = message.style 這裡的 message 就是我們 UserProductModal.vue 傳過來的物件資料， message.style 會被賦予到 style
+      // const title = message.title
+      // 至於 content 沒有的話就不會呈現而已
+      // 這個 message 的長相就是這樣
+      // message: {
+      //   style: 'success',
+      //   title: '圖片已上傳',
+      // }
+
+      // 另外，const { style = 'success', title, content } = message;
+      // 它的原型是這樣 const { style, title, content } = message;
+      // 如果加了等號，叫做設定一個預設值
+      // 他的意思是，當我今天傳過來的 message 裡面沒有 style 的時候
+      // 我預設他就會是 success
+
+      // 但今天會有一個狀況
+      // 假如今天我們的 style 是長這樣： style: 'danger';
+      // 他傳進來的會是 danger，因為預設只有在沒有任何東西的時候才會出現
+
+      // 這邊這個也是物件縮寫
+      // .push({
+      //   // 這個 style 就是 const style = message.style 這裡的 style
+      //   style: style,
+      // })
+
+      // 最後他們都會傳到上面 data 的 message 陣列裡
       this.messages.push({ style, title, content });
       this.toastShow();
     });
