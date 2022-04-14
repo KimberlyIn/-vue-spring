@@ -2,7 +2,7 @@
   <div>
     <Navbar/>
     <!-- <ToastMessages></ToastMessages> -->
-    <!-- 呈現 /admin/products -->
+    <!-- 決定是否呈現畫面 ( 是否登入 )  -->
     <router-view v-if="status"/>
   </div>
 </template>
@@ -15,7 +15,7 @@ import ToastMessages from '@/components/ToastMessages.vue';
 export default {
   data() {
     return {
-      // 呈現 /admin/products
+      // 決定是否呈現畫面 ( 是否登入 ) 
       status: false,
     };
   },
